@@ -1,7 +1,7 @@
 import SideBar from './components/SideBar.jsx';
 import CreateProject from "./components/CreateProject.jsx";
-import defaultImg from './assets/no-projects.png';
 import EmptyProject from "./components/EmptyProject.jsx";
+import ProjectManage from "./components/ProjectManage.jsx";
 
 function App() {
   return (
@@ -9,7 +9,8 @@ function App() {
       <div className="flex">
         <SideBar />
         {/*<EmptyProject />*/}
-        <CreateProject />
+        {/*<CreateProject />*/}
+        <ProjectManage />
       </div>
 
     </>
