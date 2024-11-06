@@ -2,15 +2,65 @@ import SideBar from './components/SideBar.jsx';
 import CreateProject from "./components/CreateProject.jsx";
 import EmptyProject from "./components/EmptyProject.jsx";
 import ProjectManage from "./components/ProjectManage.jsx";
+import {useRef, useState} from "react";
+
+// let PROJECT_DATA = [
+//   {
+//     title : null,
+//     description : null,
+//     dueDate : null
+//   }
+// ]
 
 function App() {
+  const [isCreatingProject, setIsCreatingProject] = useState(false);
+  // const projectData = useRef([]);
+  const [projectData, setProjectData] = useState([]);
+
+  const projectTitles = [...projectData.map(({title, ...rest}) => title)];
+
+  console.log(projectTitles);
+
+  function handleCreating() {
+    if (event.target.classList.contains('creating')) {
+      console.log("2 : " + isCreatingProject);
+      setIsCreatingProject(true);
+    } else {
+      if (event.target.classList.contains('saveBtn'))
+        saveProjectData();
+
+      setIsCreatingProject(false);
+    }
+  }
+
+  function saveProjectData() {
+
+/*    setProjectData((prevProjectData) => {
+      return [
+        {
+          title: title,
+          description: description,
+          dueDate: dueDate
+        },
+        ...prevProjectData
+      ];
+    });*/
+  }
+
   return (
     <>
       <div className="flex">
-        <SideBar />
-        {/*<EmptyProject />*/}
-        {/*<CreateProject />*/}
-        <ProjectManage />
+        <SideBar
+          onClick={handleCreating}
+          // projectList={}
+        />
+        {isCreatingProject ? (
+          <CreateProject ref={projectTitles} onClick={handleCreating} onSave={saveProjectData} />
+        ) : (
+          <EmptyProject onClick={handleCreating} />
+        )}
+
+        {/*<ProjectManage />*/}
       </div>
 
     </>
