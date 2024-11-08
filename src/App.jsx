@@ -4,20 +4,20 @@ import EmptyProject from "./components/EmptyProject.jsx";
 import ProjectManage from "./components/ProjectManage.jsx";
 import {useRef, useState} from "react";
 
-// let PROJECT_DATA = [
-//   {
-//     title : null,
-//     description : null,
-//     dueDate : null
-//   }
-// ]
+let PROJECT_DATA = [
+  {
+    title : null,
+    description : null,
+    dueDate : null
+  }
+]
 
 function App() {
   const [isCreatingProject, setIsCreatingProject] = useState(false);
-  // const projectData = useRef([]);
-  const [projectData, setProjectData] = useState([]);
+  const projectData = useRef(PROJECT_DATA);
+  // const [projectData, setProjectData] = useState([]);
 
-  const projectTitles = [...projectData.map(({title, ...rest}) => title)];
+  const projectTitles = projectData ? [...projectData.map(({title}) => title)] : [];
 
   console.log(projectTitles);
 
@@ -34,7 +34,8 @@ function App() {
   }
 
   function saveProjectData() {
-
+    projectData.current;
+    console.log(event.target['title']);
 /*    setProjectData((prevProjectData) => {
       return [
         {
