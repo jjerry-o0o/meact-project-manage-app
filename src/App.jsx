@@ -14,38 +14,34 @@ let PROJECT_DATA = [
 
 function App() {
   const [isCreatingProject, setIsCreatingProject] = useState(false);
-  const projectData = useRef(PROJECT_DATA);
+  const projectData = useRef([]);
   // const [projectData, setProjectData] = useState([]);
 
-  const projectTitles = projectData ? [...projectData.map(({title}) => title)] : [];
+  const projectTitles = projectData ? [...projectData.current.map(({title}) => title)] : [];
 
-  console.log(projectTitles);
+  // console.log("2 : "+projectTitles.toString());
 
   function handleCreating() {
     if (event.target.classList.contains('creating')) {
-      console.log("2 : " + isCreatingProject);
       setIsCreatingProject(true);
     } else {
       if (event.target.classList.contains('saveBtn'))
-        saveProjectData();
+        // saveProjectData();
 
       setIsCreatingProject(false);
     }
   }
 
-  function saveProjectData() {
-    projectData.current;
-    console.log(event.target['title']);
-/*    setProjectData((prevProjectData) => {
-      return [
-        {
-          title: title,
-          description: description,
-          dueDate: dueDate
-        },
-        ...prevProjectData
-      ];
-    });*/
+  function saveProjectData({title, description, dueDate}) {
+    // const {title, description, dueDate} = event;
+    console.log(title, description, dueDate);
+    // console.log(event.target.title + " : " + event.target.description + " : " + event.target.dueDate);
+    projectData.current.push({
+      title: title,
+      description: description,
+      dueDate: dueDate
+    });
+    console.log("1 : "+projectData.current[0].title);
   }
 
   return (
@@ -67,6 +63,7 @@ function App() {
     </>
   );
 }
+
 
 export default App;
 
