@@ -9,7 +9,7 @@ export default function EmptyProject({ onClick }) {
         <p className="text-neutral-400 font-semibold">Select a project or get started with a new one</p>
         <button
           className="creating bg-neutral-800 font-semibold text-neutral-500 rounded-md px-3 py-1.5 mt-8"
-          onClick={onClick}>Create new project</button>
+          onClick={() => onClick("Create", -1)}>Create new project</button>
       </div>
     </section>
   );

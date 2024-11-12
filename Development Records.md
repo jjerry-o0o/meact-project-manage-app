@@ -55,5 +55,20 @@
   - 프로젝트 생성시 작성한 내용 보이도록
 
 ### 2024-11-11
-- 사용자가 입력한 newProjectData 와 생성된 프로젝트 정보들을 모두 가지고 있는
-PROJECT_DATA 를 각각 어떻게 관리할지 고민하기 (useState 와 useRef 를 각각 어떻게 사용할지)
+- 사용자가 입력한 newProjectData 와 생성된 프로젝트 정보들을 모두 가지고 있는 PROJECT_DATA 를 
+각각 어떻게 관리할지 고민하기 (useState 와 useRef 를 각각 어떻게 사용할지)
+
+### 2024-11-12
+- 원래는 useRef 를 사용해서 projectData 를 관리하려고 했는데
+구글링 하다 보니 useRef 를 리액트 도큐먼트에서도 지양하라는 얘기가 있다는 내용을 봐서
+useRef 를 사용해보기 위해 억지로 넣기 보다 useState 를 최대한 활용하는 방향으로 수정
+- 기존에 isCreatingProject 라는 명칭으로 useState 로 관리하던 화면(section) 변경은
+sectionType 이라는 명칭으로 수정하여 각 버튼별로 클릭시 각각에 맞는 화면이 나올 수 있도록 수정
+- 기존에 projectData 라는 명칭으로 useRef 로 관리하던 값은
+동일한 명칭에 useState 로 변경하여 관리하는 방향으로 수정
+- 원래는 projectData 의 값이 변경 되어도 이벤트 발생시에만 변경된 값을 
+projectData에 반영하면 된다 생각해서, useRef 를 사용하려 했는데
+다시 생각해보니 동일한 이치로 setProjectData를 제한적으로 원할 때만 사용해주면 되는 부분이라
+useState 를 사용하는 방향으로 변경했다.
+- 다음 할 일
+  - ProjectManage 화면에서 할일 추가하는 기능

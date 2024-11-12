@@ -2,64 +2,64 @@ import SideBar from './components/SideBar.jsx';
 import CreateProject from "./components/CreateProject.jsx";
 import EmptyProject from "./components/EmptyProject.jsx";
 import ProjectManage from "./components/ProjectManage.jsx";
-import {useRef, useState} from "react";
-
-let PROJECT_DATA = [
-  {
-    title : null,
-    description : null,
-    dueDate : null
-  }
-]
+import {useState} from "react";
 
 function App() {
-  const [isCreatingProject, setIsCreatingProject] = useState(false);
-  const projectData = useRef([]);
-  // const [projectData, setProjectData] = useState([]);
+  const [sectionType, setSectionType] = useState({});
+  const [projectData, setProjectData] = useState([]);
 
-  const projectTitles = projectData ? [...projectData.current.map(({title}) => title)] : [];
-
-  // console.log("2 : "+projectTitles.toString());
-
-  function handleCreating() {
-    if (event.target.classList.contains('creating')) {
-      setIsCreatingProject(true);
-    } else {
-      if (event.target.classList.contains('saveBtn'))
-        // saveProjectData();
-
-      setIsCreatingProject(false);
+  const projectTitles = projectData ? [...projectData.map(({title}) => title)] : [];
+  const selectedProject = sectionType.index > -1 ? (
+    {
+      title: projectData[sectionType.index].title,
+      description: projectData[sectionType.index].description,
+      dueDate: projectData[sectionType.index].dueDate
     }
+  ) : undefined;
+
+
+  function handleSectionType(sectionType, index) {
+    setSectionType(() => {
+      return {
+        sectionType: sectionType, index: index
+      }
+    })
   }
 
   function saveProjectData({title, description, dueDate}) {
-    // const {title, description, dueDate} = event;
-    console.log(title, description, dueDate);
-    // console.log(event.target.title + " : " + event.target.description + " : " + event.target.dueDate);
-    projectData.current.push({
-      title: title,
-      description: description,
-      dueDate: dueDate
+    setProjectData((prevProjectData) => {
+      return [{
+        title: title,
+        description: description,
+        dueDate: dueDate
+      }, ...prevProjectData
+      ];
     });
-    console.log("1 : "+projectData.current[0].title);
+
+    setSectionType("Empty");
   }
 
   return (
     <>
       <div className="flex">
         <SideBar
-          onClick={handleCreating}
-          // projectList={}
+          onClick={handleSectionType}
+          titleList={projectTitles}
+          selectedTitle={sectionType.index > -1 && selectedProject.title}
         />
-        {isCreatingProject ? (
-          <CreateProject ref={projectTitles} onClick={handleCreating} onSave={saveProjectData} />
+        {sectionType.sectionType === "Create" ? (
+          <CreateProject
+            onClick={handleSectionType} onSave={saveProjectData}/>
+        ) : sectionType.sectionType === "Manage" ? (
+          <ProjectManage
+            title={selectedProject.title}
+            description={selectedProject.description}
+            dueDate={selectedProject.dueDate}
+          />
         ) : (
-          <EmptyProject onClick={handleCreating} />
+          <EmptyProject onClick={handleSectionType}/>
         )}
-
-        {/*<ProjectManage />*/}
       </div>
-
     </>
   );
 }

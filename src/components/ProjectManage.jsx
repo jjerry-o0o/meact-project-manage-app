@@ -1,12 +1,14 @@
-export default function ProjectManage() {
+export default function ProjectManage({title, description, dueDate}) {
   return (
     <section className="float-left grow pt-24 pl-12 pr-52">
       <div className="flex justify-between mb-3">
-        <h1 className="text-3xl font-black text-neutral-700">Project Name</h1>
+        <h1 className="text-3xl font-black text-neutral-700">{title}</h1>
         <button className="inline-block align-baseline font-semibold text-neutral-500">Delete</button>
       </div>
-      <h2 className="font-semibold text-neutral-400 ">Jun 16, 2024</h2>
-      <p className="mt-4 mb-6 text-lg font-semibold text-neutral-500 leading-7">Project Description<br/>Project Description<br/>Project Description</p>
+      <h2 className="font-semibold text-neutral-400 ">{dueDate}</h2>
+      <p className="mt-4 mb-6 text-lg font-semibold text-neutral-500 leading-7">
+        {description}
+      </p>
 
       <hr className="mb-6 border-b-2 border-neutral-300" />
 
