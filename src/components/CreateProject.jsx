@@ -11,6 +11,7 @@ export default function CreateProject({ onClick, onSave }) {
       title : inputTitle.current.value,
       description : inputDescription.current.value,
       dueDate : inputDueDate.current.value,
+      tasks: []
     }
     onSave(projectInputData);
   }

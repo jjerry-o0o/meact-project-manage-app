@@ -9,11 +9,13 @@ function App() {
   const [projectData, setProjectData] = useState([]);
 
   const projectTitles = projectData ? [...projectData.map(({title}) => title)] : [];
-  const selectedProject = sectionType.index > -1 ? (
+  const selectedProjectIndex = sectionType.index;
+  const selectedProject = selectedProjectIndex > -1 ? (
     {
-      title: projectData[sectionType.index].title,
-      description: projectData[sectionType.index].description,
-      dueDate: projectData[sectionType.index].dueDate
+      title: projectData[selectedProjectIndex].title,
+      description: projectData[selectedProjectIndex].description,
+      dueDate: projectData[selectedProjectIndex].dueDate,
+      tasks: projectData[selectedProjectIndex].tasks
     }
   ) : undefined;
 
@@ -31,12 +33,25 @@ function App() {
       return [{
         title: title,
         description: description,
-        dueDate: dueDate
+        dueDate: dueDate,
+        tasks: []
       }, ...prevProjectData
       ];
     });
 
     setSectionType("Empty");
+  }
+
+  function saveProjectTasks(newTask){
+    setProjectData((prevProjectData) => {
+      prevProjectData.map((selectedProject, index) => {
+        if(selectedProjectIndex === index)
+          return {
+            ...selectedProject,
+            tasks: newTask
+          }
+      });
+    });
   }
 
   return (
@@ -45,16 +60,15 @@ function App() {
         <SideBar
           onClick={handleSectionType}
           titleList={projectTitles}
-          selectedTitle={sectionType.index > -1 && selectedProject.title}
+          selectedTitle={selectedProjectIndex > -1 && selectedProject.title}
         />
         {sectionType.sectionType === "Create" ? (
           <CreateProject
             onClick={handleSectionType} onSave={saveProjectData}/>
         ) : sectionType.sectionType === "Manage" ? (
           <ProjectManage
-            title={selectedProject.title}
-            description={selectedProject.description}
-            dueDate={selectedProject.dueDate}
+            selectedProjectData={selectedProject}
+            onTasksAdd={saveProjectTasks}
           />
         ) : (
           <EmptyProject onClick={handleSectionType}/>
