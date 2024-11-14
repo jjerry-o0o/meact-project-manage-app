@@ -80,8 +80,21 @@ useState 를 사용하는 방향으로 변경했다.
   2. ProjectManage 에서 newTask 생성 되면 바로 App 에 있는 projectData 에 반영. (newTask 는 useRef 로 관리)
   
 - 1번 방법은 useState 를 남용하는 것 같고, 2번 방법은 필요치 않은 렌더링이 남발하게 되는 것 같음
-- 위 두가지 방법 중에서 고민하다가, tasks 는 ProjectManage 화면에서만 상태가 변하는 값이라
-ProjectManage 화면만 렌더링 되도록 하는게 맞을 것 같다고 생각함.
-- ProjectManage 에서 tasks 를 task 내용과 index 로 구성된 객체 배열 형태로 만들어서 useState 사용해서 상태 관리하고,
-화면을 나가게 되는 경우에 App 컴포넌트에 전달해서 setProjectData 에 반영될 수 있도록.
-  - tasks 를 배열이 아닌 객체 배열로 하는 이유는 삭제할 때 중복 되는 내용이 있는 경우 
+- 위 두가지 방법 중에서 고민하다가, tasks 는 ProjectManage 화면에서만 상태가 변하는 값이라 ProjectManage 화면만 렌더링 되도록 하는게 맞을 것 같다고 생각함.
+- ProjectManage 에서 tasks 를 task 내용과 index 로 구성된 객체 배열 형태로 만들어서 useState 사용해서 상태 관리하고, 화면을 나가게 되는 경우에 App 컴포넌트에 전달해서 setProjectData 에 반영될 수 있도록.
+  - tasks 를 배열이 아닌 객체 배열로 하는 이유는 삭제할 때 중복 되는 내용이 있는 경우
+
+
+- 막상 작업하다 보니, setNewTasks() 가 호출할 때,  setProjectData() 도 호출하는 식으로 구현이 되었다. ProjectManage 화면을 벗어나는 순간에만 setProjectData() 를 호출하자니, 그럴려면 sectionType 이 Manage 가 아닌 순간 또는, 다른 프로젝트를 클릭한 순간을 알 수 있어야 하는데,,,, 
+
+- 생각해보니 setSectionType 을 사용하면 가능할 것 같다. 
+- 추가로, sectionType 에서 사용하는 index 값에는 projectId 값을 넣어주는 형태로 변경해야 할 것 같다. projectId 는 projectTitles 에서도 사용하도록 코드를 수정했다.
+
+
+
+[ 다음 할일 ]
+1. projectId 값을 사용하여, 각 프로젝트의 데이터가 관리 될 수 있도록 하기
+2. 사이드 바에서 프로젝트 명 클릭시 각 프로젝트 데이터가 알맞게 ProjectManage 에 바인딩 되도록 하기
+   - 지금처럼 selectedProject 를 사용할건지, ProjectManage 에 prop 넘길때, projectData.map() 사용해서 projectId 일치하는 데이터를 넘길지 고민하기
+3. 프로젝트 별로 tasks 저장할 때, projectId 값이 일치하는 곳에 tasks 저장 되도록 하기
+4. 위의 할일 다 완료하면 validation 체크 추가랑 기타 등등 마저 완료 하기

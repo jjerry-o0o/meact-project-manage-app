@@ -12,10 +12,10 @@ export default function SideBar({ onClick, titleList, selectedTitle }) {
           </button>
         </div>
         <div className="flex flex-col space-y-4 mt-8 w-5/6">
-          {titleList.map((title, idx) =>
-            <button key={idx}
+          {titleList.map(({projectId, title}) =>
+            <button key={projectId}
                className={title === selectedTitle ? "manage text-neutral-400 pl-3 bg-neutral-900" : "manage text-neutral-400 pl-3"}
-               onClick={() => onClick("Manage", idx)}
+               onClick={() => onClick("Manage", projectId)}
             >
               {title}
             </button>
