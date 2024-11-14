@@ -72,3 +72,16 @@ projectData에 반영하면 된다 생각해서, useRef 를 사용하려 했는�
 useState 를 사용하는 방향으로 변경했다.
 - 다음 할 일
   - ProjectManage 화면에서 할일 추가하는 기능
+
+### 2024-11-14
+- ProjectManage 화면에서 tasks 를 보여줘야 하는데 어떻게 하는게 좋을까
+  (신규 저장 및 삭제 가능해야함. 수정은 아직 x)
+  1. ProjectManage 컴포넌트(자식)에서 tasks 만 useState 사용하여 상태 관리하고, 값 변경 시 App 컴포넌트(부모)에 전달
+  2. ProjectManage 에서 newTask 생성 되면 바로 App 에 있는 projectData 에 반영. (newTask 는 useRef 로 관리)
+  
+- 1번 방법은 useState 를 남용하는 것 같고, 2번 방법은 필요치 않은 렌더링이 남발하게 되는 것 같음
+- 위 두가지 방법 중에서 고민하다가, tasks 는 ProjectManage 화면에서만 상태가 변하는 값이라
+ProjectManage 화면만 렌더링 되도록 하는게 맞을 것 같다고 생각함.
+- ProjectManage 에서 tasks 를 task 내용과 index 로 구성된 객체 배열 형태로 만들어서 useState 사용해서 상태 관리하고,
+화면을 나가게 되는 경우에 App 컴포넌트에 전달해서 setProjectData 에 반영될 수 있도록.
+  - tasks 를 배열이 아닌 객체 배열로 하는 이유는 삭제할 때 중복 되는 내용이 있는 경우 

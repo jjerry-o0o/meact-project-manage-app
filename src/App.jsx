@@ -36,21 +36,23 @@ function App() {
         dueDate: dueDate,
         tasks: []
       }, ...prevProjectData
-      ];
+      ]
     });
 
     setSectionType("Empty");
   }
 
-  function saveProjectTasks(newTask){
+  function saveProjectTasks(newTasks){
     setProjectData((prevProjectData) => {
-      prevProjectData.map((selectedProject, index) => {
-        if(selectedProjectIndex === index)
-          return {
-            ...selectedProject,
-            tasks: newTask
-          }
+      return prevProjectData.map((data) => {
+        return {
+          ...data,
+          tasks: newTasks
+        }
       });
+
+
+
     });
   }
 
@@ -68,7 +70,7 @@ function App() {
         ) : sectionType.sectionType === "Manage" ? (
           <ProjectManage
             selectedProjectData={selectedProject}
-            onTasksAdd={saveProjectTasks}
+            onTasksSave={saveProjectTasks}
           />
         ) : (
           <EmptyProject onClick={handleSectionType}/>
