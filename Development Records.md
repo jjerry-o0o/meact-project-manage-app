@@ -98,3 +98,7 @@ useState 를 사용하는 방향으로 변경했다.
    - 지금처럼 selectedProject 를 사용할건지, ProjectManage 에 prop 넘길때, projectData.map() 사용해서 projectId 일치하는 데이터를 넘길지 고민하기
 3. 프로젝트 별로 tasks 저장할 때, projectId 값이 일치하는 곳에 tasks 저장 되도록 하기
 4. 위의 할일 다 완료하면 validation 체크 추가랑 기타 등등 마저 완료 하기
+
+
+### 2024-11-15
+- sectionType (=sectionType, index) 상태 값을 viewMode(=sectionType) 와 selectedProjectId(=index) 두개로 나눠서 관리하는 걸로 변경
