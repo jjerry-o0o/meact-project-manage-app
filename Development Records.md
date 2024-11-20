@@ -102,3 +102,25 @@ useState 를 사용하는 방향으로 변경했다.
 
 ### 2024-11-15
 - sectionType (=sectionType, index) 상태 값을 viewMode(=sectionType) 와 selectedProjectId(=index) 두개로 나눠서 관리하는 걸로 변경
+
+### 2024-11-20
+수정 사항 및 남은 기능 정리
+1. 상태 값 viewMode, projectData, selectedProjecId 로 수정
+2. viewMode 값에 따라 화면 전환 되도록 수정
+3. 프로젝트 생성 시 projectId 값 포함한 projectData 저장되도록 수정
+4. 사이드 바에 projectData 의 projectId, title 값 뿌려지도록 수정
+5. 사이드 바에서 title 클릭시 해당 projectId 값을 가진 projectData 가 ProjectManage 화면에 정상 바인딩 되도록 수정
+6. ProjectManage 화면에서 tasks 상태 관리 및 App 으로 전달하여 projectData.tasks 에 저장 되도록 작업
+7. task 삭제 기능 작업
+8. project 삭제 기능 작업
+
+
+내 맘대로 변경 사항
+- ProjectManage.jsx 에 description, tasks Update 기능 추가
+  - 강의에서 보여준 완성본에는 ProjectManage 화면에 Delete, Add Task 버튼만 있어서,
+  Add Task 할 때마다 App 컴포넌트의 setProjectData 를 호출하는게 깔끔한 방법일 것 같다.
+  - 근데 나는 그렇게 하게 되면 task를 생성할 때마다 부모 컴포넌트를 다시 렌더링 하는게 맘에 들지 않아서 task 를 ProjectManage 에서 따로 관리 하다가 projectId 또는 viewMode 가 변경되는 경우에만 부모 컴포넌트의 setProjectData 를 호출 하고 싶다.
+  - 이를 구현하기 위해서는 내부적으로 projectId 와 viewMode 변경 시에 setProjectData 를
+  호출해서 task 를 저장하면 되는데, 굳이 나는 task 가 변경되지 않은 경우에는 저장을 하기 싫었고,
+  그렇다고 tasks 의 모든 내용을 확인하는건 너무 구리니까, update 버튼을 추가하여 사용자 판단에 맡기기로 했다.
+  - 그리고 이왕 update 기능 추가 된 김에 description 도 같이 추가될 수 있도록 바꾸기로 했다.
