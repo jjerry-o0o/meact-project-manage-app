@@ -1,33 +1,36 @@
 import { useRef } from "react";
 
-export default function CreateProject({ onClick, onSave }) {
+export default function CreateProject({ onChangeView, onSave }) {
   const inputTitle = useRef();
   const inputDescription = useRef();
   const inputDueDate = useRef();
 
-
-  function handleSubmit() {
-    const projectInputData = {
-      title : inputTitle.current.value,
-      description : inputDescription.current.value,
-      dueDate : inputDueDate.current.value,
-      tasks: []
-    }
-    onSave(projectInputData);
-  }
+  //
+  // function handleSubmit() {
+  //   const projectInputData = {
+  //     title : inputTitle.current.value,
+  //     description : inputDescription.current.value,
+  //     dueDate : inputDueDate.current.value,
+  //     tasks: []
+  //   }
+  //   onSave(projectInputData);
+  // }
 
   return (
     <section className="float-left grow pt-32 pl-12 pr-52">
         <div className="text-end space-x-2">
           <button
             className="border border-neutral-300 rounded-md w-20 py-1.5"
-            type="button" onClick={() => onClick("Empty", -1)}
+            type="button" onClick={() => onChangeView("Empty")}
           >
             Cancel
           </button>
           <button
+            type="button"
             className="text-white bg-black rounded-md w-20 py-1.5"
-            type="button" onClick={handleSubmit}
+            onClick={() => onSave(inputTitle.current.value
+                                , inputDescription.current.value
+                                , inputDueDate.current.value)}
           >
             Save
           </button>
