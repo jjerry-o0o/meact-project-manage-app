@@ -1,6 +1,8 @@
-export default function SideBar({ onChangeView, projectData }) {
-  const {projectId, title} = projectData;
-  console.log(projectId+ " : "+ title);
+export default function SideBar({ onChangeView, projectData, selectedId, onSelectedProject }) {
+  function selectedTitle(projectId) {
+    onSelectedProject(projectId);
+    onChangeView("Manage");
+  }
   return (
     <>
       <aside className="float-left bg-black rounded-tr-lg w-2/12 h-screen pt-14 pl-8 mt-8">
@@ -16,8 +18,8 @@ export default function SideBar({ onChangeView, projectData }) {
         <div className="flex flex-col space-y-4 mt-8 w-5/6">
           {projectData.map(({projectId, title}) =>
             <button key={projectId}
-               // className={title === selectedTitle ? "text-neutral-400 pl-3 bg-neutral-900" : "manage text-neutral-400 pl-3"}
-               onClick={() => onChangeView("Manage")}
+               className={projectId === selectedId ? "text-neutral-400 pl-3 bg-neutral-900" : "text-neutral-400 pl-3"}
+               onClick={() => selectedTitle(projectId)}
             >
               {title}
             </button>

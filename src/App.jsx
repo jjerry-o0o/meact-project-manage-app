@@ -7,11 +7,8 @@ import {useState} from "react";
 let PROJECT_ID = 0;
 
 function App() {
-  // viewMode 에서
   const [viewMode, setViewMode] = useState("Empty");
-  // projectData 에서 projectId, title, description, dueDate, tasks 관리
   const [projectData, setProjectData] = useState([]);
-  // selectedProjectId 에서 사용자가 선택한 프로젝트의 projectId 값 관리
   const [selectedProjectId, setSelectedProjectId] = useState(null);
 
   function handleViewMode(view) {
@@ -19,7 +16,6 @@ function App() {
   }
 
   function saveProjectData(title, description, dueDate) {
-    console.log("projectId : "+PROJECT_ID);
     setProjectData((prevProjectData) => {
       return [{
         projectId: PROJECT_ID === 0 ? PROJECT_ID : ++PROJECT_ID,
@@ -33,6 +29,19 @@ function App() {
     });
 
     setViewMode("Empty");
+  }
+
+  function updateProjectData(description, tasks) {
+    setProjectData((prevProjectData) => {
+      prevProjectData.map((project) => {
+        if (project.projectId === selectedProjectId)
+          return [{
+            description: description,
+            tasks: tasks,
+            ...project
+          }]
+      });
+    });
   }
 
 
@@ -70,8 +79,9 @@ function App() {
       <div className="flex">
         <SideBar
           onChangeView={handleViewMode}
-          projectData={projectData}//.map(({projectId, title}) => ([{projectId, title}]))}
-          // selectedTitle={selectedProjectIndex > -1 && selectedProject.title}
+          projectData={projectData}
+          selectedId={selectedProjectId}
+          onSelectedProject={setSelectedProjectId}
         />
         {viewMode === "Create" ? (
           <CreateProject
@@ -80,8 +90,8 @@ function App() {
           />
         ) : viewMode === "Manage" ? (
           <ProjectManage
-            // selectedProjectData={selectedProject}
-            // onTasksSave={saveProjectTasks}
+            selectedProjectData={projectData.find((data) => data.projectId === selectedProjectId)}
+            onTasksSave={updateProjectData}
           />
         ) : (
           <EmptyProject onChangeView={handleViewMode}/>
