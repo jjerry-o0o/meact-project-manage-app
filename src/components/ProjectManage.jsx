@@ -1,17 +1,23 @@
-import {useState} from "react";
+import {useState, useRef} from "react";
 
 let TASK_NO = 0;
 
 export default function ProjectManage({selectedProjectData, onTasksSave}) {
   const {projectId, title, description, dueDate, tasks} = selectedProjectData;
   const [isEditing, setIsEditing] = useState(false);
-  const [editDesc, setEditDesc] = useState(null);
   const [newTasks, setNewTasks] = useState([]);
 
+  let editDesc = useRef(null);
+  let addedTask = useRef(null);
+
   function handleSaveNewTasks() {
-    setNewTasks((prevTasks) => {
-      return []
-    });
+    if(addedTask !== null){
+      setNewTasks((prevTasks) => {
+        return [...prevTasks, addedTask.current.value];
+      });
+
+      addedTask.current.value = "";
+    }
   }
 
     return (
@@ -24,7 +30,7 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
 
         <div className="flex">
           <button className="inline-block font-semibold text-neutral-500 border border-neutral-300 rounded-md w-20 h-fit py-1.5 mr-1"
-                  onClick={onTasksSave}
+                  onClick={() => onTasksSave(editDesc, newTasks)}
           >
             Update
           </button>
@@ -38,6 +44,7 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
       <div className="flex items-end mt-4">
         {isEditing ? (
           <textarea
+            ref={editDesc}
             className="w-[40rem] h-[72px] bg-neutral-200 border-neutral-300 pt-1"
           >
             {description}
@@ -58,8 +65,13 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
       <hr className="mt-4 mb-6 border-b-2 border-neutral-300" />
 
       <h1 className="font-bold text-3xl text-neutral-700 mb-2">Tasks</h1>
-      <input type="text" className="inline-block bg-neutral-200 rounded-md w-72 h-8"/>
-      <button className="inline-block font-bold text-neutral-500 ml-4 mb-8">Add Task</button>
+      <input ref={addedTask} type="text" className="inline-block bg-neutral-200 rounded-md w-72 h-8"/>
+      <button
+        className="inline-block font-bold text-neutral-500 ml-4 mb-8"
+        onClick={handleSaveNewTasks}
+      >
+        Add Task
+      </button>
       {newTasks.length > 0 ? newTasks.map((task, key) =>
         <div key={key} className="flex justify-between grow h-20 bg-neutral-100">
           <p className="flex items-center ml-4 font-bold text-neutral-700">{task}</p>
