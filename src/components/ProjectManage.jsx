@@ -11,16 +11,30 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
   let addedTask = useRef(null);
 
   function handleSaveNewTasks() {
-    if(addedTask !== null){
+    const addedTaskValue = addedTask.current.value;
+
+    if(addedTaskValue !== null){
       setNewTasks((prevTasks) => {
-        return [...prevTasks, addedTask.current.value];
+        return [
+          {
+            taskId: TASK_NO === 0 ? TASK_NO : ++TASK_NO,
+            task: addedTaskValue
+          },
+          ...prevTasks];
       });
 
       addedTask.current.value = "";
     }
   }
 
-    return (
+  function deleteTask(taskId) {
+    setNewTasks(() => {
+      newTasks.filter((newTask) => newTask.taskId !== taskId);
+    });
+
+  }
+
+  return (
     <section className="float-left grow pt-24 pl-12 pr-52">
       <div className="flex justify-between mb-4">
         <div className="flex items-end">
@@ -29,8 +43,9 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
         </div>
 
         <div className="flex">
-          <button className="inline-block font-semibold text-neutral-500 border border-neutral-300 rounded-md w-20 h-fit py-1.5 mr-1"
-                  onClick={() => onTasksSave(editDesc, newTasks)}
+          <button
+            className="inline-block font-semibold text-neutral-500 border border-neutral-300 rounded-md w-20 h-fit py-1.5 mr-1"
+            onClick={() => onTasksSave(editDesc, newTasks)}
           >
             Update
           </button>
@@ -62,7 +77,7 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
         </button>
       </div>
 
-      <hr className="mt-4 mb-6 border-b-2 border-neutral-300" />
+      <hr className="mt-4 mb-6 border-b-2 border-neutral-300"/>
 
       <h1 className="font-bold text-3xl text-neutral-700 mb-2">Tasks</h1>
       <input ref={addedTask} type="text" className="inline-block bg-neutral-200 rounded-md w-72 h-8"/>
@@ -72,10 +87,15 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
       >
         Add Task
       </button>
-      {newTasks.length > 0 ? newTasks.map((task, key) =>
-        <div key={key} className="flex justify-between grow h-20 bg-neutral-100">
+      {newTasks.length > 0 ? newTasks.map((task, taskId) =>
+        <div key={taskId} className="flex justify-between grow h-20 bg-neutral-100">
           <p className="flex items-center ml-4 font-bold text-neutral-700">{task}</p>
-          <button className="inline-block mr-4 font-bold text-neutral-500">Clear</button>
+          <button
+            className="inline-block mr-4 font-bold text-neutral-500"
+            onClick={() => deleteTask(taskId)}
+          >
+            Clear
+          </button>
         </div>
       ) : undefined}
     </section>
