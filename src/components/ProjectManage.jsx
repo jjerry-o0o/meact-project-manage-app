@@ -1,14 +1,23 @@
 import {useState, useRef} from "react";
 
-let TASK_NO = 0;
-
-export default function ProjectManage({selectedProjectData, onTasksSave}) {
+export default function ProjectManage({selectedProjectData, onUpdateProject}) {
   const {projectId, title, description, dueDate, tasks} = selectedProjectData;
   const [isEditing, setIsEditing] = useState(false);
+  const [updateDescription, setUpdateDescription] = useState(description);
   const [newTasks, setNewTasks] = useState([]);
+  const [taskId, setTaskId] = useState(0);
 
-  let editDesc = useRef(null);
-  let addedTask = useRef(null);
+  const editDesc = useRef("");
+  const addedTask = useRef(null);
+  let textAreaValue = editDesc.current.value;
+
+  function handleUpdateDescription() {
+
+    if(isEditing) {
+      setUpdateDescription(textAreaValue);
+    }
+    setIsEditing(!isEditing);
+  }
 
   function handleSaveNewTasks() {
     const addedTaskValue = addedTask.current.value;
@@ -16,25 +25,21 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
     if(addedTaskValue !== null){
       setNewTasks((prevTasks) => {
         return [
+          ...prevTasks,
           {
-            taskId: TASK_NO === 0 ? TASK_NO : ++TASK_NO,
+            taskId: taskId,
             task: addedTaskValue
-          },
-          ...prevTasks];
+          }
+        ];
       });
 
       addedTask.current.value = "";
+      setTaskId((prevTaskId) => {return ++prevTaskId});
     }
   }
 
-  function deleteTask(taskId) {
-
-    console.log("clear task : "+);
-    console.log("clear Id : "+taskId);
-    setNewTasks(() => {
-      newTasks.filter((newTask) => newTask.taskId !== taskId);
-    });
-
+  function deleteTask(deleteTaskId) {
+    setNewTasks(newTasks.filter((newTask) => newTask.taskId !== deleteTaskId));
   }
 
   return (
@@ -48,7 +53,7 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
         <div className="flex">
           <button
             className="inline-block font-semibold text-neutral-500 border border-neutral-300 rounded-md w-20 h-fit py-1.5 mr-1"
-            onClick={() => onTasksSave(editDesc, newTasks)}
+            onClick={() => onUpdateProject(textAreaValue, newTasks)}
           >
             Update
           </button>
@@ -63,18 +68,18 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
         {isEditing ? (
           <textarea
             ref={editDesc}
-            className="w-[40rem] h-[72px] bg-neutral-200 border-neutral-300 pt-1"
+            className="w-[40rem] h-[72px] bg-neutral-200 border-neutral-300 pl-1"
           >
-            {description}
+            {updateDescription}
           </textarea>
         ) : (
           <p className="w-[40rem] font-semibold text-neutral-500 leading-6">
-            {description}
+            {updateDescription}
           </p>
         )}
         <button
           className="font-bold text-neutral-500 border-b-2 border-neutral-300 h-fit ml-3"
-          onClick={() => setIsEditing(!isEditing)}
+          onClick={handleUpdateDescription}
         >
           {isEditing ? "Save Description" : "Edit Description"}
         </button>

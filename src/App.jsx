@@ -10,7 +10,7 @@ function App() {
   const [viewMode, setViewMode] = useState("Empty");
   const [projectData, setProjectData] = useState([]);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
-
+console.log({projectData});
   function handleViewMode(view) {
     setViewMode(view);
   }
@@ -32,6 +32,8 @@ function App() {
   }
 
   function updateProjectData(description, tasks) {
+    console.log({description, tasks})
+
     setProjectData((prevProjectData) => {
       prevProjectData.map((project) => {
         if (project.projectId === selectedProjectId)
@@ -42,6 +44,8 @@ function App() {
           }]
       });
     });
+
+    setViewMode("Empty");
   }
 
 
@@ -91,7 +95,7 @@ function App() {
         ) : viewMode === "Manage" ? (
           <ProjectManage
             selectedProjectData={projectData.find((data) => data.projectId === selectedProjectId)}
-            onTasksSave={updateProjectData}
+            onUpdateProject={updateProjectData}
           />
         ) : (
           <EmptyProject onChangeView={handleViewMode}/>
