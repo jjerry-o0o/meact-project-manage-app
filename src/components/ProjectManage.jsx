@@ -28,6 +28,9 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
   }
 
   function deleteTask(taskId) {
+
+    console.log("clear task : "+);
+    console.log("clear Id : "+taskId);
     setNewTasks(() => {
       newTasks.filter((newTask) => newTask.taskId !== taskId);
     });
@@ -87,17 +90,17 @@ export default function ProjectManage({selectedProjectData, onTasksSave}) {
       >
         Add Task
       </button>
-      {newTasks.length > 0 ? newTasks.map((task, taskId) =>
-        <div key={taskId} className="flex justify-between grow h-20 bg-neutral-100">
-          <p className="flex items-center ml-4 font-bold text-neutral-700">{task}</p>
+      {newTasks !== [] ? newTasks.map((task, key) => (
+        <div key={key} className="flex justify-between grow h-20 bg-neutral-100">
+          <p className="flex items-center ml-4 font-bold text-neutral-700">{task.task}</p>
           <button
             className="inline-block mr-4 font-bold text-neutral-500"
-            onClick={() => deleteTask(taskId)}
+            onClick={() => deleteTask(task.taskId)}
           >
             Clear
           </button>
         </div>
-      ) : undefined}
+      )) : undefined}
     </section>
   );
 }
