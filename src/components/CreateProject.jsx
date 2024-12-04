@@ -1,20 +1,9 @@
 import { useRef } from "react";
 
 export default function CreateProject({ onChangeView, onSave }) {
-  const inputTitle = useRef();
-  const inputDescription = useRef();
-  const inputDueDate = useRef();
-
-  //
-  // function handleSubmit() {
-  //   const projectInputData = {
-  //     title : inputTitle.current.value,
-  //     description : inputDescription.current.value,
-  //     dueDate : inputDueDate.current.value,
-  //     tasks: []
-  //   }
-  //   onSave(projectInputData);
-  // }
+  const inputTitle = useRef(null);
+  const inputDescription = useRef(null);
+  const inputDueDate = useRef(null);
 
   return (
     <section className="float-left grow pt-32 pl-12 pr-52">

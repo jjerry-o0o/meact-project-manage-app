@@ -4,13 +4,13 @@ import EmptyProject from "./components/EmptyProject.jsx";
 import ProjectManage from "./components/ProjectManage.jsx";
 import {useState} from "react";
 
-let PROJECT_ID = 0;
 
 function App() {
   const [viewMode, setViewMode] = useState("Empty");
   const [projectData, setProjectData] = useState([]);
   const [selectedProjectId, setSelectedProjectId] = useState(null);
-console.log({projectData});
+  const [projectId, setProjectId] = useState(0);
+
   function handleViewMode(view) {
     setViewMode(view);
   }
@@ -18,7 +18,7 @@ console.log({projectData});
   function saveProjectData(title, description, dueDate) {
     setProjectData((prevProjectData) => {
       return [{
-        projectId: PROJECT_ID === 0 ? PROJECT_ID : ++PROJECT_ID,
+        projectId: projectId,
         title,
         description,
         dueDate,
@@ -28,55 +28,28 @@ console.log({projectData});
       ];
     });
 
+    setProjectId((prevProjectId) => prevProjectId + 1)
     setViewMode("Empty");
   }
 
   function updateProjectData(description, tasks) {
-    console.log({description, tasks})
-
     setProjectData((prevProjectData) => {
       prevProjectData.map((project) => {
-        if (project.projectId === selectedProjectId)
-          return [{
-            description: description,
-            tasks: tasks,
-            ...project
-          }]
+        if (project.projectId === selectedProjectId) {
+          project.description = description;
+          project.tasks = tasks;
+        }
       });
+
+      return prevProjectData;
     });
 
     setViewMode("Empty");
   }
 
-
-
-  // function saveProjectData({title, description, dueDate}) {
-  //   setProjectData((prevProjectData) => {
-  //     return [{
-  //       projectId: PROJECT_NO,
-  //       title: title,
-  //       description: description,
-  //       dueDate: dueDate,
-  //       tasks: []
-  //     }, ...prevProjectData
-  //     ]
-  //   });
-  //
-  //   setSectionType("Empty");
-  //   PROJECT_NO++;
-  // }
-
-  // function saveProjectTasks(newTasks){
-  //   setProjectData((prevProjectData) => {
-  //     return prevProjectData.map((data) => {
-  //       if (data.projectId === selectedProject.projectId)
-  //         return {
-  //           ...data,
-  //           tasks: newTasks
-  //         };
-  //     });
-  //   });
-  // }
+  function deleteProjectData() {
+    setProjectData(projectData.filter((data) => data.projectId !== selectedProjectId));
+  }
 
   return (
     <>
@@ -96,6 +69,7 @@ console.log({projectData});
           <ProjectManage
             selectedProjectData={projectData.find((data) => data.projectId === selectedProjectId)}
             onUpdateProject={updateProjectData}
+            onDeleteProject={deleteProjectData}
           />
         ) : (
           <EmptyProject onChangeView={handleViewMode}/>
