@@ -48,7 +48,11 @@ function App() {
   }
 
   function deleteProjectData() {
-    setProjectData(projectData.filter((data) => data.projectId !== selectedProjectId));
+    setProjectData((prevProjectData) => {
+      return prevProjectData.filter((data) => data.projectId !== selectedProjectId);
+    });
+
+    setViewMode("Empty");
   }
 
   return (
